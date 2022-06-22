@@ -5,8 +5,6 @@ echo "Executing in 5 seconds - CTRL-C to exit"
 echo ""
 sleep 5
 
-set -x
-
 if [ $# -lt 2 ]
 then
     echo "Not enough arguments - exiting"
@@ -174,5 +172,3 @@ ELAPSEDM=$(($(($END-$START))/60))
 ELAPSEDS=$(($(($END-$START))-$ELAPSEDM*60))
 echo "Buildbot completed in $ELAPSEDM minutes and $ELAPSEDS seconds"
 echo ""
-
-set +x
