@@ -45,12 +45,12 @@ clean_build() {
     echo "Done cleaning"
 }
 
-buildGapps() {
+build() {
     echo 'Building Lineage 19.1...'
-    lunch lineage_arm64_bgS-userdebug
+    lunch lineage_arm64_bvS-userdebug
     make installclean
-    make -j8 systemimage
-    mv $OUT/system.img ~/build-output/lineage-19.1-$BUILD_DATE-UNOFFICIAL-arm64_bgS.img
+    make -j$(nproc --all) systemimage
+    mv $OUT/system.img ~/build-output/lineage-19.1-$BUILD_DATE-UNOFFICIAL-arm64_bvS.img
     make vndk-test-sepolicy
     echo 'Done building...'
 }
@@ -65,4 +65,4 @@ clean_build
 mkdir -p ~/build-output
 
 # Build it
-buildGapps
+build
