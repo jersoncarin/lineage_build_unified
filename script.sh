@@ -1,7 +1,5 @@
 #!/bin/bash
 
-export repo = ../repo
-
 setupEnv() {
     echo "Setting up build environment"
     source build/envsetup.sh &> /dev/null
