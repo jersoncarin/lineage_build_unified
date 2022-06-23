@@ -54,7 +54,7 @@ prep_build() {
     echo ""
 
     echo "Syncing repos"
-    repo sync -c --force-sync --no-clone-bundle --no-tags -j$(nproc --all)
+    repo sync -c --force-sync --no-clone-bundle --no-tags -j2
     echo ""
 
     echo "Setting up build environment"
@@ -106,7 +106,7 @@ build_device() {
     if [ ${1} == "arm64" ]
     then
         lunch lineage_arm64-userdebug
-        make -j$(nproc --all) systemimage
+        make -j2 systemimage
         mv $OUT/system.img ~/build-output/lineage-19.1-$BUILD_DATE-UNOFFICIAL-arm64$(${PERSONAL} && echo "-personal" || echo "").img
     else
         brunch ${1}
@@ -124,7 +124,7 @@ build_treble() {
     esac
     lunch lineage_${TARGET}-userdebug
     make installclean
-    make -j$(nproc --all) systemimage
+    make -j2 systemimage
     mv $OUT/system.img ~/build-output/lineage-19.1-$BUILD_DATE-UNOFFICIAL-${TARGET}$(${PERSONAL} && echo "-personal" || echo "").img
     make vndk-test-sepolicy
 }
