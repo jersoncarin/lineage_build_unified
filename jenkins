@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clean up builds') {
+            steps {
+                sh 'rm -rf ./*'
+            }
+        }
+        stage('Setting up git') {
+            steps {
+                sh 'git config --global user.name "Jerson"'
+                sh 'git config --global user.email "bispjerson@gmail.com"'
+            }
+        }
+        stage('Cloning Lineage Upstream Manifest') {
+            steps {
+                sh 'repo init -u https://github.com/LineageOS/android.git -b lineage-19.1'
+            }
+        }
+        stage('Cloning Lineage buildscript') {
+            steps {
+                sh 'git clone https://github.com/jersoncarin/lineage_build_unified lineage_build_unified -b lineage-19.1'
+            }
+        }
+        stage('Cloning Phh Treble patch') {
+            steps {
+                sh 'git clone https://github.com/AndyCGYan/lineage_patches_unified lineage_patches_unified -b lineage-19.1'
+            }
+        }
+        stage('Preparing for builds') {
+            steps {
+                echo "Preparing local manifests"
+                sh 'mkdir -p .repo/local_manifests'
+                sh 'cp ./lineage_build_unified/local_manifests_treble/*.xml .repo/local_manifests'
+            }
+        }
+        stage('Syncing the repo') {
+            steps {
+                echo "Syncing repo..."
+                sh 'repo sync -c --force-sync --no-clone-bundle --no-tags -j8'
+            }
+        }
+        stage('Running builds and environment configuration') {
+            steps {
+                sh 'bash lineage_build_unified/setup_build.sh'
+            }
+        }
+    }
+}
